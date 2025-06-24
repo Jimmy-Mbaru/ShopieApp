@@ -33,7 +33,14 @@ async function boostrap() {
       persistAuthorization: true,
     },
   });
+
+  app.enableCors({
+    origin: 'http://localhost:4200',
+    credentials: true,
+  });
+
   await app.listen(process.env.PORT ?? 3000);
+
 
   console.log(`Swagger documentation available at: ${await app.getUrl()}/api/docs`);
 }

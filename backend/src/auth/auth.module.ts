@@ -8,6 +8,7 @@ import { JwtStrategy } from './strategies/jwt-strategies';
 import { PassportModule } from '@nestjs/passport';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { AppMailerModule } from 'src/mailer/mailer.module';
+import { PasswordResetService } from './services/password-reset.service';
 
 @Module({
   imports: [
@@ -25,8 +26,8 @@ import { AppMailerModule } from 'src/mailer/mailer.module';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, JwtStrategy],
-  exports: [AuthService],
+  providers: [AuthService, JwtStrategy, PasswordResetService],
+  exports: [AuthService, PasswordResetService],
   controllers: [AuthController],
 })
 export class AuthModule {}
