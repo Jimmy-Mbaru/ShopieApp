@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Router, RouterLink} from '@angular/router';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 
@@ -9,13 +15,12 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink]
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
 })
 export class LoginComponent implements OnInit {
-[x: string]: any;
   loginForm!: FormGroup;
   submitted = false;
-console: any;
+  private readonly TOKEN_KEY = 'access_token'; // ✅ Token key constant
 
   constructor(
     private fb: FormBuilder,
@@ -26,7 +31,7 @@ console: any;
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
     });
   }
 
@@ -42,9 +47,26 @@ console: any;
     const userData = this.loginForm.value;
 
     this.authService.login(userData).subscribe({
-      next: () => this.router.navigate(['/products']),
-      error: (err: any) =>
-        alert(err?.error?.message || 'Login failed. Please try again.')
+      next: (res) => {
+        const token = res?.access_token;
+        const role = res?.user?.role;
+
+        if (!token || !role) {
+          alert('Invalid login response. Please try again.');
+          return;
+        }
+
+        localStorage.setItem(this.TOKEN_KEY, token); // ✅ Save token
+
+        if (role === 'ADMIN') {
+          this.router.navigate(['/admin-dashboard']);
+        } else {
+          this.router.navigate(['/products']);
+        }
+      },
+      error: (err) => {
+        alert(err?.error?.message || 'Login failed. Please try again.');
+      },
     });
   }
 }

@@ -1,0 +1,59 @@
+<div class="min-h-screen bg-gray-100 p-6">
+    <!-- Brand Header -->
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-extrabold text-blue-700 tracking-wide">SHOPIE</h1>
+        <p class="text-lg text-gray-600 font-medium mt-1">Buy your dream car</p>
+        <h2 class="text-xl font-semibold text-gray-700 mt-4">Admin Dashboard</h2>
+    </div>
+
+    <!-- Main Card -->
+    <div class="bg-white p-6 rounded-xl shadow-lg">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Add New Product</h3>
+
+        <!-- Add Product Form -->
+        <div class="grid gap-4 mb-8">
+            <input [(ngModel)]="newProduct.name" placeholder="Name"
+                class="border border-gray-300 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300" />
+
+            <input [(ngModel)]="newProduct.description" placeholder="Description"
+                class="border border-gray-300 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300" />
+
+            <input [(ngModel)]="newProduct.price" type="number" placeholder="Price"
+                class="border border-gray-300 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300" />
+
+            <input [(ngModel)]="newProduct.totalStock" type="number" placeholder="Total Stock"
+                class="border border-gray-300 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300" />
+
+            <!-- File Upload -->
+            <input type="file" (change)="onFileSelected($event)"
+                class="border border-gray-300 p-2 w-full rounded-md bg-white text-gray-600 file:mr-3 file:px-4 file:py-2 file:rounded-full file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition" />
+
+            <!-- Image Preview -->
+            <img *ngIf="imagePreview" [src]="imagePreview" alt="Preview"
+                class="h-32 object-cover rounded-md mt-2 border border-gray-200" />
+
+            <!-- Submit -->
+            <button (click)="addProduct()"
+                class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition">
+                Add Product
+            </button>
+        </div>
+
+        <!-- Product List -->
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Existing Products</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div *ngFor="let p of products"
+                class="bg-white border border-gray-200 p-4 rounded-xl shadow hover:shadow-md transition">
+                <img [src]="p.image" alt="{{ p.name }}" class="h-40 object-cover w-full rounded-md mb-3" />
+                <h4 class="text-md font-bold text-gray-900">{{ p.name }}</h4>
+                <p class="text-sm text-gray-600 mb-1">{{ p.description }}</p>
+                <p class="text-sm text-blue-700">Ksh {{ p.price }}</p>
+                <p class="text-xs text-gray-500">Stock: {{ p.totalStock }}</p>
+                <button (click)="deleteProduct(p.id.toString())"
+                    class="mt-2 text-sm text-red-600 hover:underline hover:font-semibold transition">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,11 @@
 export interface Product {
-  id: number;
+  id: string; // ✅ not number
   name: string;
   description: string;
+  image: string;
   price: number;
-  image: string; // path to static asset
-  inStock: number;
+  totalStock: number;
+  availableStock?: number;
+  reservedStock?: number;
+  createdAt?: string;
 }

@@ -1,4 +1,4 @@
-import { ResetPasswordComponent} from './auth/reset-password/reset-password.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
@@ -25,6 +25,19 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/product/product.component').then(m => m.ProductComponent)
   },
+
+  {
+  path: 'admin-dashboard',
+  loadComponent: () => import('./admin/admin-product.component').then(m => m.AdminProductComponent)
+},
+
+
+  {
+    path: 'admin/products',
+    loadComponent: () =>
+      import('./admin/admin-product.component').then(m => m.AdminProductComponent)
+  },
+
   {
     path: '',
     redirectTo: 'login',

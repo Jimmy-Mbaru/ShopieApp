@@ -9,18 +9,15 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  //Register User
   register(data: any) {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
 
-  //Login user
   login(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, data);
+    return this.http.post(`${this.apiUrl}/login`, data); // Should return { user: ..., access_token: ... }
   }
-//Reset password
-requestPasswordReset(email: string) {
-  return this.http.post(`${this.apiUrl}/forgot-password`, { email });
-}
 
+  requestPasswordReset(email: string) {
+    return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+  }
 }
