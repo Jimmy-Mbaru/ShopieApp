@@ -1,4 +1,3 @@
-// src/modules/cart/cart.controller.ts
 import {
   Controller,
   Get,
@@ -20,7 +19,7 @@ import { UpdateCartItemDto } from './dtos/update-cart.dto';
 import { RemoveFromCartDto } from './dtos/remove-cart.dto';
 
 @Controller('cart')
-@UseGuards(JwtAuthGuard) // All cart endpoints require authentication
+@UseGuards(JwtAuthGuard) 
 export class CartsController {
   constructor(private readonly cartService: CartService) {}
 

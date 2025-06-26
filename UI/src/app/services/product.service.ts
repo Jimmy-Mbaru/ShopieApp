@@ -17,26 +17,26 @@ export class ProductService {
     });
   }
 
-  // ✅ Public: Fetch all products
+  // Public: Fetch all products
   getAll(): Observable<{ products: Product[] }> {
     return this.http.get<{ products: Product[] }>(this.apiUrl);
   }
 
-  // ✅ Admin: Create a product with image upload
+  // Admin: Create a product with image upload
   create(formData: FormData): Observable<Product> {
     return this.http.post<Product>(this.apiUrl, formData, {
       headers: this.getAuthHeaders()
     });
   }
 
-  // ✅ Admin: Update product
+  // Admin: Update product
   update(id: string, product: Product): Observable<Product> {
     return this.http.put<Product>(`${this.apiUrl}/${id}`, product, {
       headers: this.getAuthHeaders()
     });
   }
 
-  // ✅ Admin: Delete product
+  // Admin: Delete product
   delete(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`, {
       headers: this.getAuthHeaders()

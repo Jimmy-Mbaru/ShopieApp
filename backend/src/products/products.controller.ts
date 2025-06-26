@@ -1,4 +1,3 @@
-// products.controller.ts
 import {
   Controller,
   Post,
@@ -48,13 +47,13 @@ export class ProductsController {
     return this.productService.createWithImage(body, file, req.user.id);
   }
 
-  // ✅ Public: Get all products
+  // Public: Get all products
   @Get()
   async findAll(@Query() query: ProductQueryDto) {
     return this.productService.findAll(query);
   }
 
-  // ✅ Admin: Delete product by ID
+  // Admin: Delete product by ID
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(ADMIN)
