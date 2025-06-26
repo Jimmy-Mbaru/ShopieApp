@@ -3,6 +3,7 @@ import {
   Post,
   Get,
   Delete,
+  Put,
   Param,
   Query,
   Body,
@@ -13,9 +14,11 @@ import {
   HttpCode,
   HttpStatus,
   ValidationPipe,
+  Patch,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateProductDto } from './dtos/create-product.dto';
+import { UpdateProductDto } from './dtos/update-product.dto';
 import { ProductService } from './products.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/role.guard';
@@ -31,7 +34,7 @@ const { ADMIN } = $Enums.UserRole;
 export class ProductsController {
   constructor(private readonly productService: ProductService) {}
 
-  //  Admin: Create a product
+  // Admin: Create a product
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(ADMIN)
@@ -62,4 +65,19 @@ export class ProductsController {
   async remove(@Param('id') id: string, @Request() req) {
     await this.productService.remove(id, req.user.id);
   }
+
+// Admin: Update product by ID
+@Patch(':id')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(ADMIN)
+@ApiBearerAuth('JWT-auth')
+@HttpCode(HttpStatus.OK)
+async update(
+  @Param('id') id: string,
+  @Body(ValidationPipe) updateDto: UpdateProductDto,
+  @Request() req,
+) {
+  return this.productService.update(id, updateDto, req.user.id);
+}
+
 }

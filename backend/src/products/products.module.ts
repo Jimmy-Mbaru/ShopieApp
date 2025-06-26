@@ -5,7 +5,7 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary/cloudinary.module';
 
 @Module({
-  imports: [PrismaModule, CloudinaryModule], // ✅ Add here
+  imports: [PrismaModule, CloudinaryModule], // Add here
   controllers: [ProductsController],
   providers: [ProductService],
   exports: [ProductService],

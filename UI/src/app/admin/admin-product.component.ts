@@ -21,8 +21,9 @@ export class AdminProductComponent implements OnInit {
   };
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
+  editingProductId: string | null = null;
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
     this.loadProducts();
@@ -49,11 +50,23 @@ export class AdminProductComponent implements OnInit {
     }
   }
 
+  editProduct(product: Product): void {
+    this.editingProductId = product.id;
+    this.newProduct = {
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      totalStock: product.totalStock
+    };
+    this.imagePreview = product.image;
+    this.selectedFile = null; // Reset file since it's optional during edit
+  }
+
   addProduct(): void {
     const { name, description, price, totalStock } = this.newProduct;
 
-    if (!name || !description || price === undefined || totalStock === undefined || !this.selectedFile) {
-      alert('Please fill in all fields and select an image.');
+    if (!name || !description || price === undefined || totalStock === undefined) {
+      alert('Please fill in all fields.');
       return;
     }
 
@@ -67,6 +80,35 @@ export class AdminProductComponent implements OnInit {
 
     if (isNaN(parsedStock) || parsedStock < 0) {
       alert('Stock must be zero or more.');
+      return;
+    }
+
+    if (this.editingProductId) {
+      const updatedProduct = {
+        name: name.trim(),
+        description: description.trim(),
+        price: parsedPrice,
+        totalStock: parsedStock
+      };
+
+      this.productService.update(this.editingProductId, updatedProduct).subscribe({
+        next: () => {
+          this.resetForm();
+          this.loadProducts();
+        },
+        error: (err) => {
+          console.error('Failed to update product:', err);
+          alert(err?.error?.message || 'Update failed.');
+        }
+      });
+
+      return;
+    }
+
+
+    // Add logic
+    if (!this.selectedFile) {
+      alert('Please select an image.');
       return;
     }
 
@@ -92,7 +134,7 @@ export class AdminProductComponent implements OnInit {
 
   deleteProduct(id: string): void {
     if (!confirm('Are you sure you want to delete this product?')) return;
-    
+
     this.productService.delete(id).subscribe({
       next: () => this.loadProducts(),
       error: (err) => {
@@ -106,5 +148,6 @@ export class AdminProductComponent implements OnInit {
     this.newProduct = { name: '', description: '', price: undefined, totalStock: undefined };
     this.selectedFile = null;
     this.imagePreview = null;
+    this.editingProductId = null;
   }
 }

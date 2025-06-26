@@ -41,18 +41,29 @@
 
         <!-- Product List -->
         <h3 class="text-lg font-bold text-gray-800 mb-4">Existing Products</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div *ngFor="let p of products"
-                class="bg-white border border-gray-200 p-4 rounded-xl shadow hover:shadow-md transition">
-                <img [src]="p.image" alt="{{ p.name }}" class="h-40 object-cover w-full rounded-md mb-3" />
-                <h4 class="text-md font-bold text-gray-900">{{ p.name }}</h4>
-                <p class="text-sm text-gray-600 mb-1">{{ p.description }}</p>
-                <p class="text-sm text-blue-700">Ksh {{ p.price }}</p>
-                <p class="text-xs text-gray-500">Stock: {{ p.totalStock }}</p>
-                <button (click)="deleteProduct(p.id.toString())"
-                    class="mt-2 text-sm text-red-600 hover:underline hover:font-semibold transition">
-                    Delete
-                </button>
+                class="bg-white border border-gray-200 p-4 rounded-xl shadow-md flex flex-col">
+                <img [src]="p.image" alt="{{ p.name }}"
+                    class="w-full h-[250px] object-cover rounded-md mb-3 border border-gray-100" />
+                <h4 class="text-md font-semibold text-gray-900 truncate">{{ p.name }}</h4>
+                <p class="text-sm text-gray-600 line-clamp-2 mb-1">{{ p.description }}</p>
+                <p class="text-sm text-blue-700 font-medium">Ksh {{ p.price }}</p>
+                <p class="text-xs text-gray-500 mb-2">Stock: {{ p.totalStock }}</p>
+
+                <div class="flex space-x-2 mt-2">
+                    <button (click)="editProduct(p)"
+                        class="bg-green-400 hover:bg-green-500 text-white px-3 py-1.5 rounded-lg text-sm shadow-sm transition-colors">
+                        Edit
+                    </button>
+                    <button (click)="deleteProduct(p.id.toString())"
+                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-sm shadow-sm transition-colors">
+                        Delete
+                    </button>
+                </div>
+
+
+
             </div>
         </div>
     </div>

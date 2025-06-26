@@ -29,12 +29,13 @@ export class ProductService {
     });
   }
 
-  // Admin: Update product
-  update(id: string, product: Product): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/${id}`, product, {
-      headers: this.getAuthHeaders()
-    });
-  }
+ // Admin: Update product
+update(id: string, product: Partial<Omit<Product, 'id' | 'image'>>): Observable<Product> {
+  return this.http.patch<Product>(`${this.apiUrl}/${id}`, product, {
+    headers: this.getAuthHeaders()
+  });
+}
+
 
   // Admin: Delete product
   delete(id: string): Observable<any> {

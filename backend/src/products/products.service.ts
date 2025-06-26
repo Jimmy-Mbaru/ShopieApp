@@ -17,7 +17,7 @@ export class ProductService {
   constructor(
     private prisma: PrismaService,
     private cloudinaryService: CloudinaryService,
-  ) {}
+  ) { }
 
   /**
    * Create a product with image upload
@@ -117,21 +117,28 @@ export class ProductService {
   }
 
   async update(
-    id: string,
-    updateProductDto: UpdateProductDto,
-    adminId: string,
-  ): Promise<Product> {
-    const product = await this.prisma.product.findUnique({ where: { id } });
+  id: string,
+  updateProductDto: UpdateProductDto,
+  adminId: string,
+): Promise<Product> {
+  const product = await this.prisma.product.findUnique({ where: { id } });
 
-    if (!product) throw new NotFoundException(`Product with ID ${id} not found`);
-    if (product.adminId !== adminId)
-      throw new BadRequestException('You can only update your own products');
-
-    return this.prisma.product.update({
-      where: { id },
-      data: { ...updateProductDto },
-    });
+  if (!product) {
+    throw new NotFoundException(`Product with ID ${id} not found`);
   }
+
+  if (product.adminId !== adminId) {
+    throw new BadRequestException('You can only update your own products');
+  }
+
+  return this.prisma.product.update({
+    where: { id },
+    data: {
+      ...updateProductDto,
+    },
+  });
+}
+
 
   async remove(id: string, adminId: string): Promise<void> {
     const product = await this.prisma.product.findUnique({ where: { id } });
